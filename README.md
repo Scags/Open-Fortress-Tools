@@ -1,5 +1,7 @@
 # Open-Fortress-Tools
- Basic tools for Open Fortress Sourcemod development
+ Basic tools for Open Fortress Sourcemod development.
+
+ This also comes with gamedata for a proper SourceMod base install. However...
 
 # LINUX ONLY #
 I can't be bothered to use Windows. So, sorry. Linux bins are stripped anyways so it's already a pain to get signatures and offsets. PRs are welcome but Windows gamedata responsibility will be yours until the end of time.
