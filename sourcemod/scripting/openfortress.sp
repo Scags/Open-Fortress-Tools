@@ -338,6 +338,7 @@ public MRESReturn CTFPlayerShared_RemoveCond(Address pThis, Handle hParams)
 	if (TF2_IsPlayerInCondition(client, cond))
 		g_iCondRemove[client][cond] = true;
 }
+
 public MRESReturn CTFPlayerShared_RemoveCondPost(Address pThis, Handle hParams)
 {
 	Address m_pOuter = view_as< Address >(FindSendPropInfo("CTFPlayer", "m_bIsZombie") - FindSendPropInfo("CTFPlayer", "m_Shared") + 3);
