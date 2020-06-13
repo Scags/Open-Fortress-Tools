@@ -159,7 +159,7 @@ public void OnPluginStart()
 	{
 		DHookAddParam(hook, HookParamType_Int);
 		DHookAddParam(hook, HookParamType_Float);
-		DHookAddParam(hook, HookParamType_Int);	// Pass as Int so null providers aren't "world"
+//		DHookAddParam(hook, HookParamType_Int);	// Pass as Int so null providers aren't "world"
 		// The way the ext does it is pretty stupid, so let's just cheese it
 		// This is probably better since devs can hook and remove conds before any logic gets churned
 		DHookEnableDetour(hook, false, CTFPlayerShared_AddCond);
