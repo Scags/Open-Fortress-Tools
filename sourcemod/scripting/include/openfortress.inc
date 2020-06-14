@@ -826,7 +826,7 @@ forward void TF2_OnConditionAdded(int client, TFCond cond, float dur/*, int infl
 
 forward void OF_OnPlayerRegenerated(int client);
 forward void OF_OnPlayerSpawned(int client);
-forward Action OF_CanGoToStalemate(bool &origval);
+//forward Action OF_CanGoToStalemate(bool &origval);
 
 native void OF_InitClass(int client);
 

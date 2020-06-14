@@ -671,8 +671,14 @@ stock Handle DHookCreateDetourEx(GameData conf, const char[] name, CallingConven
 {
 	Handle h = DHookCreateDetour(Address_Null, callConv, returntype, thisType);
 	if (h)
+	{
 		if (!DHookSetFromConf(h, conf, SDKConf_Signature, name))
+		{
 			LogError("Could not set %s from config!", name);
+			delete h;
+			return null;
+		}
+	}
 	return h;
 }
 
