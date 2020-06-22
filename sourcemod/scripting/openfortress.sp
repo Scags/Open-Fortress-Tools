@@ -560,6 +560,9 @@ public any Native_TF2_DisguisePlayer(Handle plugin, int numParams)
 	int team = GetNativeCell(2);
 	int class = GetNativeCell(3);
 	int target = GetNativeCell(4);
+	if (target == 0)
+		target = -1;	// -1 -> NULL
+
 	SDKCall(hDisguisePlayer, GetEntityAddress(client) + view_as< Address >(FindSendPropInfo("CTFPlayer", "m_Shared")), team, class, target);
 	return 0;
 }
@@ -611,7 +614,7 @@ public any Native_TF2_StunPlayer(Handle plugin, int numParams)
 	}
 
 	stun_struct_t stunEvent;
-	stunEvent.hPlayer = GetClientUserId(attacker);		// Store by userid, better this way
+	stunEvent.hPlayer = attacker ? GetClientUserId(attacker) : 0;		// Store by userid, better this way
 	stunEvent.flDuration = time;
 	stunEvent.flExpireTime = GetGameTime() + time;
 	stunEvent.flStartFadeTime = GetGameTime() + time;

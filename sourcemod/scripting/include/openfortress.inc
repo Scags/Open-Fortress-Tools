@@ -813,6 +813,7 @@ stock TFObjectMode TF2_GetObjectMode(int entity)
 native void TF2_IgnitePlayer(int client, int attacker);
 native void TF2_RespawnPlayer(int client);
 native void TF2_RegeneratePlayer(int client);
+// inflictor is unused but exists for bcompat
 native void TF2_AddCondition(int client, TFCond cond, float dur = TFCondDuration_Infinite, int inflictor = 0);
 native void TF2_RemoveCondition(int client, TFCond cond);
 native void TF2_DisguisePlayer(int client, TFTeam team, TFClassType classType, int target = 0);
@@ -824,10 +825,12 @@ forward void TF2_OnConditionAdded(int client, TFCond cond, float dur/*, int infl
 
 // Enough of that, here's some Open Fortress stuff
 
+// post_inventory_application
 forward void OF_OnPlayerRegenerated(int client);
+// player_spawn
 forward void OF_OnPlayerSpawned(int client);
-//forward Action OF_CanGoToStalemate(bool &origval);
 
+// Should be used after TF2_RegeneratePlayer. Manages class weapons and arm models
 native void OF_InitClass(int client);
 
 enum
