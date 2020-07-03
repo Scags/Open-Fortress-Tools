@@ -199,6 +199,8 @@ enum TFCond:
 	TFCond_InvisPowerup, // 132
 	TFCond_Haste, // 133
 	TFCond_Juggernaught, // 134
+	TFCond_Poison,
+	TFCond_Tranq,
 
 	TFCond_LAST
 };
