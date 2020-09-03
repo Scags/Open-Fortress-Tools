@@ -37,7 +37,8 @@
 			"OnTakeDamage"
 			{
 				"linux"		"63"
-				"mac"		"62"
+				"mac"		"63"
+				"windows" 	"62"
 			}
 			"OnTakeDamage_Alive"
 			{
