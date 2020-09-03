@@ -25,91 +25,91 @@
 			
 			"GiveNamedItem"
 			{
-//				"windows"	"401"
+				"windows"	"400"
 				"linux"		"401"
 				"mac"		"401"
 			}
 			"RemovePlayerItem"
 			{
-//				"windows"	"273"
+				"windows"	"270"
 				"linux"		"271"
 				"mac"		"271"
 			}
 			"Weapon_GetSlot"
 			{
-//				"windows"	"271"
+				"windows"	"268"
 				"linux"		"269"
 				"mac"		"269"
 			}
 			"Ignite"
 			{
-//				"windows"	"212"
+				"windows"	"209"
 				"linux"		"210"
 				"mac"		"210"
 			}
 			"Extinguish"
 			{
-//				"windows"	"216"
+				"windows"	"213"
 				"linux"		"214"
 				"mac"		"214"
 			}
 			"Teleport"
 			{
-//				"windows"	"108"
+				"windows"	"108"
 				"linux"		"109"
 				"mac"		"109"
 			}
 			"CommitSuicide"
 			{
-//				"windows"	"445"
+				"windows"	"440"
 				"linux"		"440"
 				"mac"		"440"
 			}
 			"GetVelocity"
 			{
-//				"windows"	"140"
+				"windows"	"140"
 				"linux"		"141"
 				"mac"		"141"
 			}
 			"EyeAngles"
 			{
-//				"windows"	"131"
+				"windows"	"131"
 				"linux"		"132"
 				"mac"		"132"
 			}
 			"SetEntityModel"
 			{
-//				"windows"	"24"
+				"windows"	"24"
 				"linux"		"25"
 				"mac"		"25"
 			}
 			"AcceptInput"
 			{
-//				"windows"	"36"
+				"windows"	"36"
 				"linux"		"37"
 				"mac"		"37"
 			}
 			"WeaponEquip"
 			{
-//				"windows"	"264"
+				"windows"	"261"
 				"linux"		"262"
 				"mac"		"262"
 			}
 			"Activate"
 			{
-//				"windows"	"33"
+				"windows"	"33"
 				"linux"		"34"
 				"mac"		"34"
 			}
 			"PlayerRunCmd"
 			{
-//				"windows"	"422"
+				"windows"	"419"
 				"linux"		"420"
 				"mac"		"420"
 			}
 			"GiveAmmo"
 			{
-//				"windows"	"255"
+				"windows"	"252"
 				"linux"		"253"
 				"mac"		"253"
 			}
@@ -160,7 +160,7 @@
 			"FireOutput"
 			{
 				"library"	"server"
-//				"windows"	"\x55\x8B\xEC\x81\xEC\x24\x01\x00\x00\x53\x8B\xC1"
+				"windows"	"\x55\x8B\xEC\x81\xEC\x3C\x01\x00\x00\xA1\x2A\x2A\x2A\x2A\x33\xC5\x89\x45\xFC\x53\x8B\x5D\x20"
 				"linux"		"\x55\x89\xE5\x57\x56\x53\x81\xEC\x9C\x01\x00\x00\x65\x8B\x35\x14\x00\x00\x00"
 				"mac"		"\x55\x89\xE5\x57\x56\x53\x81\xEC\x9C\x01\x00\x00\x65\x8B\x35\x14\x00\x00\x00"
 			}

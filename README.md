@@ -1,10 +1,10 @@
 # Open-Fortress-Tools
  Basic tools for Open Fortress Sourcemod development.
 
- This also comes with gamedata for a proper SourceMod base install. However...
+ This also comes with gamedata for a proper SourceMod base install.
 
-# LINUX ONLY #
-I can't be bothered to use Windows. So, sorry. Linux bins are stripped anyways so it's already a pain to get signatures and offsets. PRs are welcome but Windows gamedata responsibility will be yours until the end of time.
+# GOOD LUCK #
+I can't guarantee that anything here will work. I've tried to future-proof signatures the best I can but I'm at the mercy of the 4-updates-per-day thing they've got going on at OF. There's finally Windows support but I don't test windows as I have no method of doing so.
 
 # THIS IS GOING TO BREAK. A LOT #
 Open Fortress gets updated every 20 seconds so gamedata will break like there's no tomorrow. If/when they do break, you'll have to either live without, wait for me to actually update new gamedata, or get the signatures/offsets yourself.

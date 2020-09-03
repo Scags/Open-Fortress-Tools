@@ -25,7 +25,7 @@
 #define TF_STUNFLAGS_NORMALBONK     TF_STUNFLAG_BONKSTUCK
 #define TF_STUNFLAGS_BIGBONK        TF_STUNFLAG_CHEERSOUND|TF_STUNFLAG_BONKSTUCK
 
-enum TFClassType:
+enum TFClassType
 {
 	TFClass_Unknown = 0,
 	TFClass_Scout,
@@ -45,7 +45,7 @@ enum TFClassType:
 	TFClass_Random
 };
 
-enum TFTeam:
+enum TFTeam
 {
 	TFTeam_Unassigned = 0,
 	TFTeam_Spectator = 1,
@@ -57,7 +57,7 @@ enum TFTeam:
 	TFTeam_COUNT,
 };
 
-enum TFCond:
+enum TFCond
 {
 	TFCond_Slowed = 0, //0: Revving Minigun, Sniper Rifle. Gives zoomed/revved pose
 	TFCond_Zoomed, //1: Sniper Rifle zooming
@@ -207,7 +207,7 @@ enum TFCond:
 
 const float TFCondDuration_Infinite = -1.0;
 
-enum TFObjectType:
+enum TFObjectType
 {
 	TFObject_CartDispenser = 0,
 	TFObject_Dispenser = 0,
@@ -216,7 +216,7 @@ enum TFObjectType:
 	TFObject_Sapper = 3
 };
 
-enum TFObjectMode:
+enum TFObjectMode
 {
 	TFObjectMode_None = 0,
 	TFObjectMode_Entrance = 0,
@@ -471,7 +471,7 @@ enum {
 	TF_FLAGEVENT_RETURNED
 };
 
-enum TFResourceType:
+enum TFResourceType
 {
 	TFResource_Ping,
 	TFResource_Score,

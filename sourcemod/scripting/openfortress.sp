@@ -82,6 +82,18 @@ stun_struct_t
 	g_Stuns[MAXPLAYERS+1]
 ;
 
+// I hate windows, so, so much
+ArrayStack
+	g_Bullshit1,
+	g_Bullshit2
+;
+
+enum struct CondShit
+{
+	TFCond cond;
+	float time;
+}
+
 #define CHECK(%1,%2) if (!(%1)) LogError("Could not load native for \"" ... %2 ... "\"")
 
 public void OnPluginStart()
@@ -178,10 +190,6 @@ public void OnPluginStart()
 	}
 	else LogError("Could not load detour for RemoveCondition, TF2_OnConditionRemoved forward has been disabled");
 
-	hook = DHookCreateDetourEx(conf, "CanAttack", CallConv_THISCALL, ReturnType_Bool, ThisPointer_CBaseEntity);
-	if (hook)
-		DHookEnableDetour(hook, false, CTFPlayer_CanAttack);
-
 	//	hook = DHookCreateDetourEx(conf, "HandleCommand_JoinClass", CallConv_THISCALL, ReturnType_Void, ThisPointer_CBaseEntity);
 	//	if (hook)
 	//	{
@@ -218,6 +226,20 @@ public void OnPluginStart()
 			OnClientPutInServer(i);
 
 	HookEvent("player_death", OnPlayerDeath);
+
+	// SO
+	// Params aren't saved inside of post hooks, so we gotta get fancy, reaaaaally fancy
+	// NOT ONLY THAT!
+	// Because there is a native that calls the function we are hooked into, which calls a forward,
+	// we can hit some serious recursion issues!
+	// THEREFORE
+	// I save the bad coders a headache because I am so very nice
+	// AND
+	// I make an arraystack of params, so we are all one big happy family
+	// 2 for add and remove
+	// 2 blocksize because cond + time
+	g_Bullshit1 = new ArrayStack(sizeof(CondShit));
+	g_Bullshit2 = new ArrayStack(sizeof(CondShit));
 }
 
 public void OnClientPutInServer(int client)
@@ -283,28 +305,32 @@ public Action OnPlayerRunCmd(int client, int &buttons)
 	return Plugin_Continue;
 }
 
-bool g_iCondAdd[MAXPLAYERS+1][TFCond_LAST];
-bool g_iCondRemove[MAXPLAYERS+1][TFCond_LAST];
+bool g_iCondAdd[MAXPLAYERS+1][view_as< int >(TFCond_LAST)*2];
+bool g_iCondRemove[MAXPLAYERS+1][view_as< int >(TFCond_LAST)*2];
 public MRESReturn CTFPlayerShared_AddCond(Address pThis, Handle hParams)
 {
 	Address m_pOuter = view_as< Address >(FindSendPropInfo("CTFPlayer", "m_bIsZombie") - FindSendPropInfo("CTFPlayer", "m_Shared") + 3);
-	int client = GetEntityFromAddress(view_as< Address >((LoadFromAddress(pThis + m_pOuter, NumberType_Int32))));
+	int client = GetEntityFromAddress(view_as< Address >(LoadFromAddress(pThis + m_pOuter, NumberType_Int32)));
 
-	TFCond cond = DHookGetParam(hParams, 1);
+	CondShit shit;
+	shit.cond = DHookGetParam(hParams, 1);
+	shit.time = DHookGetParam(hParams, 2);
+
+	g_Bullshit1.PushArray(shit, sizeof(shit));
 
 	if (client == -1 || !IsClientInGame(client) || !IsPlayerAlive(client))	// Sanity check
 		return;
 
-	if (!TF2_IsPlayerInCondition(client, cond))
-		g_iCondAdd[client][cond] = true;
+	if (!TF2_IsPlayerInCondition(client, shit.cond))
+		g_iCondAdd[client][shit.cond] = true;
 }
 public MRESReturn CTFPlayerShared_AddCondPost(Address pThis, Handle hParams)
 {
 	Address m_pOuter = view_as< Address >(FindSendPropInfo("CTFPlayer", "m_bIsZombie") - FindSendPropInfo("CTFPlayer", "m_Shared") + 3);
-	int client = GetEntityFromAddress(view_as< Address >((LoadFromAddress(pThis + m_pOuter, NumberType_Int32))));
-	float time = DHookGetParam(hParams, 2);
+	int client = GetEntityFromAddress(view_as< Address >(LoadFromAddress(pThis + m_pOuter, NumberType_Int32)));
 
-	TFCond cond = DHookGetParam(hParams, 1);
+	CondShit shit;
+	g_Bullshit1.PopArray(shit, sizeof(shit));
 
 	if (client == -1 ||!IsClientInGame(client))	// Sanity check
 		return;
@@ -312,39 +338,42 @@ public MRESReturn CTFPlayerShared_AddCondPost(Address pThis, Handle hParams)
 	if (IsPlayerAlive(client))
 	{
 		// If this cond was added, and it stuck, launch the forward
-		if (g_iCondAdd[client][cond] && TF2_IsPlayerInCondition(client, cond))
+		if (g_iCondAdd[client][shit.cond] && TF2_IsPlayerInCondition(client, shit.cond))
 		{
 			Call_StartForward(hOnConditionAdded);
 			Call_PushCell(client);
-			Call_PushCell(cond);
-			Call_PushFloat(time);
+			Call_PushCell(shit.cond);
+			Call_PushFloat(shit.time);
 //			Call_PushCell(provider);
 			Call_Finish();
 		}
 	}
-	g_iCondAdd[client][cond] = false;
+	g_iCondAdd[client][shit.cond] = false;
 }
 
 public MRESReturn CTFPlayerShared_RemoveCond(Address pThis, Handle hParams)
 {
 	Address m_pOuter = view_as< Address >(FindSendPropInfo("CTFPlayer", "m_bIsZombie") - FindSendPropInfo("CTFPlayer", "m_Shared") + 3);
-	int client = GetEntityFromAddress(view_as< Address >((LoadFromAddress(pThis + m_pOuter, NumberType_Int32))));
+	int client = GetEntityFromAddress(view_as< Address >(LoadFromAddress(pThis + m_pOuter, NumberType_Int32)));
 
-	TFCond cond = DHookGetParam(hParams, 1);
+	CondShit shit;
+	shit.cond = DHookGetParam(hParams, 1);
+	g_Bullshit2.PushArray(shit, sizeof(shit));
 
 	if (client == -1 || !IsPlayerAlive(client))	// Sanity check
 		return;
 
-	if (TF2_IsPlayerInCondition(client, cond))
-		g_iCondRemove[client][cond] = true;
+	if (TF2_IsPlayerInCondition(client, shit.cond))
+		g_iCondRemove[client][shit.cond] = true;
 }
 
 public MRESReturn CTFPlayerShared_RemoveCondPost(Address pThis, Handle hParams)
 {
 	Address m_pOuter = view_as< Address >(FindSendPropInfo("CTFPlayer", "m_bIsZombie") - FindSendPropInfo("CTFPlayer", "m_Shared") + 3);
-	int client = GetEntityFromAddress(view_as< Address >((LoadFromAddress(pThis + m_pOuter, NumberType_Int32))));
+	int client = GetEntityFromAddress(view_as< Address >(LoadFromAddress(pThis + m_pOuter, NumberType_Int32)));
 
-	TFCond cond = DHookGetParam(hParams, 1);
+	CondShit shit;
+	g_Bullshit2.PopArray(shit, sizeof(shit));
 
 	if (client == -1)	// Sanity check
 		return;
@@ -352,21 +381,19 @@ public MRESReturn CTFPlayerShared_RemoveCondPost(Address pThis, Handle hParams)
 	if (IsPlayerAlive(client))
 	{
 		// If this cond was actually removed, launch the forward
-		if (g_iCondRemove[client][cond] && !TF2_IsPlayerInCondition(client, cond))
+		if (g_iCondRemove[client][shit.cond] && !TF2_IsPlayerInCondition(client, shit.cond))
 		{
 			Call_StartForward(hOnConditionRemoved);
 			Call_PushCell(client);
-			Call_PushCell(cond);
+			Call_PushCell(shit.cond);
 			Call_Finish();
 		}
 	}
-	g_iCondRemove[client][cond] = false;
+	g_iCondRemove[client][shit.cond] = false;
 }
 
 public MRESReturn CTFPlayer_Regenerate(int pThis)
 {
-	// For safe keeping
-	// http://scag.tech/images/gimgim.png
 }
 public MRESReturn CTFPlayer_Regenerate_Post(int pThis)
 {
@@ -374,34 +401,6 @@ public MRESReturn CTFPlayer_Regenerate_Post(int pThis)
 	Call_StartForward(hOnRegeneration);
 	Call_PushCell(pThis);
 	Call_Finish();
-}
-/*
-public MRESReturn CTFGameRules_CanGoToStalemate(Handle hReturn)
-{
-	bool val = DHookGetReturn(hReturn);
-	Action action;
-
-	Call_StartForward(hCanGoToStalemate);
-	Call_PushCellRef(val);
-	Call_Finish(action);
-
-	if (action >= Plugin_Changed)
-	{
-		DHookSetReturn(hReturn, val);
-		return MRES_Override;
-	}
-
-	return MRES_Ignored;
-}*/
-
-public MRESReturn CTFPlayer_CanAttack(int pThis, Handle hReturn)
-{
-	if (TF2_IsPlayerInCondition(pThis, TFCond_Dazed))
-	{
-		DHookSetReturn(hReturn, false);
-		return MRES_Supercede;
-	}
-	return MRES_Ignored;
 }
 
 public MRESReturn CTFWeaponBase_CalcIsAttackCritical(int pThis)
@@ -419,35 +418,6 @@ public MRESReturn CTFPlayer_Spawn(int pThis)
 	Call_PushCell(pThis);
 	Call_Finish();
 }
-/*
-bool g_LateSpawn;
-
-public MRESReturn CTFPlayer_HandleCommand_JoinClass(int pThis)
-{
-	g_LateSpawn = true;
-}
-
-public MRESReturn CTFPlayer_HandleCommand_JoinClass_Post(int pThis)
-{
-	g_LateSpawn = false;
-}
-
-public MRESReturn CTFPlayer_HandleCommand_JoinTeam(int pThis)
-{
-	g_LateSpawn = true;
-}
-
-public MRESReturn CTFPlayer_HandleCommand_JoinTeam_Post(int pThis)
-{
-	g_LateSpawn = false;
-}
-
-public MRESReturn CTFPlayer_ForceRespawn(int pThis)
-{
-	if (g_LateSpawn)
-		return MRES_Supercede;
-	return MRES_Ignored;
-}*/
 
 public APLRes AskPluginLoad2(Handle self, bool late, char[] error, int max)
 {
@@ -614,7 +584,7 @@ public any Native_TF2_StunPlayer(Handle plugin, int numParams)
 	}
 
 	stun_struct_t stunEvent;
-	stunEvent.hPlayer = attacker ? GetClientUserId(attacker) : 0;		// Store by userid, better this way
+	stunEvent.hPlayer = 0 < attacker <= MaxClients ? GetClientUserId(attacker) : 0;		// Store by userid, better this way
 	stunEvent.flDuration = time;
 	stunEvent.flExpireTime = GetGameTime() + time;
 	stunEvent.flStartFadeTime = GetGameTime() + time;
