@@ -37,6 +37,7 @@ Handle
 
 Handle
 	hCalcIsAttackCritical,
+	hCalcIsAttackCriticalNoCrits,
 	hSpawn
 //	hForceRespawn
 ;
@@ -213,7 +214,11 @@ public void OnPluginStart()
 
 	hCalcIsAttackCritical = DHookCreateEx(conf, "CalcIsAttackCriticalHelper", HookType_Entity, ReturnType_Bool, ThisPointer_CBaseEntity, CTFWeaponBase_CalcIsAttackCritical);
 	if (!hCalcIsAttackCritical)
-		LogError("Could not load hook for CalcIsAttackCritical, OF_OnPrimaryAttack forward has been disabled");
+		LogError("Could not load hook for CalcIsAttackCritical, TF2_CalcIsAttackCritical forward has been disabled");
+
+	hCalcIsAttackCriticalNoCrits = DHookCreateEx(conf, "CalcIsAttackCriticalHelperNoCrits", HookType_Entity, ReturnType_Bool, ThisPointer_CBaseEntity, CTFWeaponBase_CalcIsAttackCriticalNoCrits);
+	if (!hCalcIsAttackCritical)
+		LogError("Could not load hook for CalcIsAttackCriticalNoCrits, TF2_CalcIsAttackCritical forward has been disabled");
 
 	hSpawn = DHookCreateEx(conf, "Spawn", HookType_Entity, ReturnType_Void, ThisPointer_CBaseEntity, CTFPlayer_Spawn);
 	if (!hSpawn)
@@ -292,7 +297,10 @@ public void TF2_OnConditionRemoved(int client, TFCond cond)
 public void OnEntityCreated(int ent, const char[] name)
 {
 	if (!strncmp(name, "tf_weapon_", 10, false) || !strncmp(name, "of_weapon_", 10, false))
+	{
 		DHookEntity(hCalcIsAttackCritical, true, ent);
+		DHookEntity(hCalcIsAttackCriticalNoCrits, true, ent);
+	}
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons)
@@ -403,13 +411,36 @@ public MRESReturn CTFPlayer_Regenerate_Post(int pThis)
 	Call_Finish();
 }
 
-public MRESReturn CTFWeaponBase_CalcIsAttackCritical(int pThis)
+public MRESReturn CTFWeaponBase_CalcIsAttackCritical(int pThis, Handle hReturn)
 {
-	int owner = GetEntPropEnt(pThis, Prop_Send, "m_hOwnerEntity");
+	return CalcIsAttackCritical(pThis, hReturn);
+}
+
+public MRESReturn CTFWeaponBase_CalcIsAttackCriticalNoCrits(int pThis, Handle hReturn)
+{
+	return CalcIsAttackCritical(pThis, hReturn);
+}
+
+public MRESReturn CalcIsAttackCritical(int ent, Handle hReturn)
+{
+	char cls[64]; GetEntityClassname(ent, cls, sizeof(cls));
+	int owner = GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity");
+	bool ret = DHookGetReturn(hReturn);
+	Action act;
+
 	Call_StartForward(hOnPrimaryAttack);
 	Call_PushCell(owner);
-	Call_PushCell(pThis);
-	Call_Finish();
+	Call_PushCell(ent);
+	Call_PushString(cls);
+	Call_PushCellRef(ret);
+	Call_Finish(act);
+
+	if (act > Plugin_Continue)
+	{
+		DHookSetReturn(hReturn, ret);
+		return MRES_Supercede;
+	}
+	return MRES_Ignored;
 }
 
 public MRESReturn CTFPlayer_Spawn(int pThis)
@@ -434,7 +465,7 @@ public APLRes AskPluginLoad2(Handle self, bool late, char[] error, int max)
 	hOnConditionAdded = new GlobalForward("TF2_OnConditionAdded", ET_Ignore, Param_Cell, Param_Cell, Param_Float);
 	hOnConditionRemoved = new GlobalForward("TF2_OnConditionRemoved", ET_Ignore, Param_Cell, Param_Cell);
 	hOnRegeneration = new GlobalForward("OF_OnPlayerRegenerated", ET_Ignore, Param_Cell);
-	hOnPrimaryAttack = new GlobalForward("OF_OnPrimaryAttack", ET_Ignore, Param_Cell, Param_Cell);
+	hOnPrimaryAttack = new GlobalForward("TF2_CalcIsAttackCritical", ET_Event, Param_Cell, Param_Cell);
 	hOnSpawn = new GlobalForward("OF_OnPlayerSpawned", ET_Ignore, Param_Cell);
 
 	RegPluginLibrary("openfortress");
