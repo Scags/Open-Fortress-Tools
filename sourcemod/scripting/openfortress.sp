@@ -465,7 +465,7 @@ public APLRes AskPluginLoad2(Handle self, bool late, char[] error, int max)
 	hOnConditionAdded = new GlobalForward("TF2_OnConditionAdded", ET_Ignore, Param_Cell, Param_Cell, Param_Float);
 	hOnConditionRemoved = new GlobalForward("TF2_OnConditionRemoved", ET_Ignore, Param_Cell, Param_Cell);
 	hOnRegeneration = new GlobalForward("OF_OnPlayerRegenerated", ET_Ignore, Param_Cell);
-	hOnPrimaryAttack = new GlobalForward("TF2_CalcIsAttackCritical", ET_Event, Param_Cell, Param_Cell);
+	hOnPrimaryAttack = new GlobalForward("TF2_CalcIsAttackCritical", ET_Event, Param_Cell, Param_Cell, Param_String, Param_CellByRef);
 	hOnSpawn = new GlobalForward("OF_OnPlayerSpawned", ET_Ignore, Param_Cell);
 
 	RegPluginLibrary("openfortress");
