@@ -184,7 +184,7 @@ public void OnPluginStart()
 	if (hook)
 	{
 		DHookAddParam(hook, HookParamType_Int);
-		DHookAddParam(hook, HookParamType_Bool);
+//		DHookAddParam(hook, HookParamType_Bool);
 		// Same as the AddCond cheese
 		DHookEnableDetour(hook, false, CTFPlayerShared_RemoveCond);
 		DHookEnableDetour(hook, true, CTFPlayerShared_RemoveCondPost);		
