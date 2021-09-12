@@ -6,27 +6,27 @@
 		{
 			"CanBeAutobalanced"
 			{
-				"linux"		"459"
-				"mac"		"459"
-				"windows" 	"458"
+				"linux"		"460"
+				"mac"		"460"
+				"windows" 	"459"
 			}
 			"EndTouch"
 			{
-				"linux"		"102"
-				"mac"		"102"
-				"windows" 	"101"
+				"linux"		"103"
+				"mac"		"103"
+				"windows" 	"102"
 			}
 			"FireBullets"
 			{
-				"linux"		"114"
-				"mac"		"114"
-				"windows" 	"113"
+				"linux"		"115"
+				"mac"		"115"
+				"windows" 	"114"
 			}
 			"GetMaxHealth"
 			{
-				"linux"		"119"
-				"mac"		"119"	
-				"windows" 	"118"
+				"linux"		"120"
+				"mac"		"120"	
+				"windows" 	"119"
 			}
 			"GroundEntChanged"
 			{
@@ -36,21 +36,21 @@
 			}
 			"OnTakeDamage"
 			{
-				"linux"		"63"
-				"mac"		"63"
-				"windows" 	"62"
+				"linux"		"64"
+				"mac"		"64"
+				"windows" 	"63"
 			}
 			"OnTakeDamage_Alive"
 			{
-				"linux"		"274"
-				"mac"		"274"
-				"windows" 	"273"
+				"linux"		"275"
+				"mac"		"275"
+				"windows" 	"274"
 			}
 			"PreThink"
 			{
-				"linux"		"334"
-				"mac"		"334"
-				"windows" 	"333"
+				"linux"		"335"
+				"mac"		"335"
+				"windows" 	"334"
 			}
 			"PostThink"
 			{
@@ -60,45 +60,45 @@
 			}
 			"Reload"
 			{
-				"linux"		"273"
-				"mac"		"273"
-				"windows" 	"272"
+				"linux"		"275"
+				"mac"		"275"
+				"windows" 	"274"
 			}
 			"SetTransmit"
 			{
-				"linux"		"21"
-				"mac"		"21"
-				"windows" 	"20"
+				"linux"		"22"
+				"mac"		"22"
+				"windows" 	"21"
 			}
 			"ShouldCollide"
 			{
-				"linux"		"17"
-				"mac"		"17"
-				"windows" 	"16"
+				"linux"		"18"
+				"mac"		"18"
+				"windows" 	"17"
 			}
 			"Spawn"
 			{
-				"linux"		"23"
-				"mac"		"23"
-				"windows" 	"16"
+				"linux"		"24"
+				"mac"		"24"
+				"windows" 	"23"
 			}
 			"StartTouch"
-			{
-				"linux"		"100"
-				"mac"		"100"
-				"windows" 	"99"
-			}
-			"Think"
-			{
-				"linux"		"48"
-				"mac"		"48"
-				"windows" 	"47"
-			}
-			"Touch"
 			{
 				"linux"		"101"
 				"mac"		"101"
 				"windows" 	"100"
+			}
+			"Think"
+			{
+				"linux"		"49"
+				"mac"		"49"
+				"windows" 	"48"
+			}
+			"Touch"
+			{
+				"linux"		"102"
+				"mac"		"102"
+				"windows" 	"101"
 			}
 			"TraceAttack"
 			{
@@ -108,51 +108,51 @@
 			}
 			"Use"
 			{
-				"linux"		"99"
-				"mac"		"99"
-				"windows" 	"98"
+				"linux"		"100"
+				"mac"		"100"
+				"windows" 	"99"
 			}
 			"VPhysicsUpdate"
 			{
-				"linux"		"161"
-				"mac"		"161"
-				"windows" 	"160"
+				"linux"		"160"
+				"mac"		"160"
+				"windows" 	"159"
 			}
 			"Blocked"
 			{
-				"linux"		"104"
-				"mac"		"104"
-				"windows" 	"103"
+				"linux"		"106"
+				"mac"		"106"
+				"windows" 	"105"
 			}
 			"Weapon_CanSwitchTo"
 			{
-				"linux"		"268"
-				"mac"		"268"
-				"windows" 	"267"
+				"linux"		"269"
+				"mac"		"269"
+				"windows" 	"268"
 			}
 			"Weapon_CanUse"
-			{
-				"linux"		"262"
-				"mac"		"262"
-				"windows" 	"261"
-			}
-			"Weapon_Drop"
-			{
-				"linux"		"265"
-				"mac"		"265"
-				"windows" 	"264"
-			}
-			"Weapon_Equip"
 			{
 				"linux"		"263"
 				"mac"		"263"
 				"windows" 	"262"
 			}
-			"Weapon_Switch"
+			"Weapon_Drop"
 			{
 				"linux"		"266"
 				"mac"		"266"
 				"windows" 	"265"
+			}
+			"Weapon_Equip"
+			{
+				"linux"		"264"
+				"mac"		"264"
+				"windows" 	"263"
+			}
+			"Weapon_Switch"
+			{
+				"linux"		"267"
+				"mac"		"267"
+				"windows" 	"266"
 			}
 		}
 	}
